@@ -1,13 +1,16 @@
 import rclpy
 from rclpy.node import Node
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import Twist, Pose
 from nav_msgs.msg import Odometry
 from std_msgs.msg import String
+from gazebo_msgs.srv import SpawnEntity
+import os
 
 
 class TurtlebotNode(Node):
     def __init__(self):
         super().__init__("turtlebot_node")
+        self.get_logger().info("TurtleBot3 Node Started")
 
         # Create publishers
         self.cmd_vel_pub = self.create_publisher(
@@ -38,6 +41,17 @@ class TurtlebotNode(Node):
         # Create a timer for movement updates
         self.create_timer(0.1, self.move_robot)
 
+        # Create a client to spawn entities in Gazebo
+        self.spawn_client = self.create_client(SpawnEntity, "/spawn_entity")
+
+        while not self.spawn_client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info("Waiting for Spawn Service...")
+
+        self.get_logger().info("Spawn Service is Ready")
+
+        # Spawn the TurtleBot3 in the office environment
+        self.spawn_turtlebot3()
+
     def odom_callback(self, msg):
         """Update robot's pose from odometry"""
         self.current_pose = msg.pose.pose
@@ -52,6 +66,34 @@ class TurtlebotNode(Node):
         cmd.linear.x = 0.2  # Forward velocity
         cmd.angular.z = 0.1  # Angular velocity
         self.cmd_vel_pub.publish(cmd)
+
+    def spawn_turtlebot3(self, name="turtlebot3", x=0.0, y=0.0, z=0.0):
+        """Spawn TurtleBot3 in Gazebo"""
+        request = SpawnEntity.Request()
+        request.name = name
+
+        # Load the TurtleBot3 URDF from the ROS2 package
+        urdf_path = os.path.join(
+            os.getenv("TURTLEBOT3_MODEL_PATH", "/usr/share/turtlebot3_description/urdf"),
+            "turtlebot3_waffle.urdf"
+        )
+        with open(urdf_path, "r") as urdf_file:
+            request.xml = urdf_file.read()
+
+        request.robot_namespace = name
+        request.initial_pose = Pose()
+        request.initial_pose.position.x = x
+        request.initial_pose.position.y = y
+        request.initial_pose.position.z = z
+
+        self.get_logger().info(f"Spawning {name} at ({x}, {y}, {z})...")
+        future = self.spawn_client.call_async(request)
+        rclpy.spin_until_future_complete(self, future)
+
+        if future.result() is not None:
+            self.get_logger().info(f"{name} spawned successfully!")
+        else:
+            self.get_logger().error(f"Failed to spawn {name}: {future.exception()}")
 
 
 def main(args=None):

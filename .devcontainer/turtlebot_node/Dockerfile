@@ -3,6 +3,7 @@ FROM osrf/ros:jazzy-desktop-full
 # Install ROS2 control and Gazebo Harmonic packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-jazzy-ros-gz-sim \
+    ros-jazzy-turtlebot3-description \
     && rm -rf /var/lib/apt/lists/*
 
 # Set up Gazebo environment variables
