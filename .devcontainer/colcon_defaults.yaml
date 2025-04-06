@@ -1,0 +1,15 @@
+{
+  "build": {
+    "symlink-install": true,
+    "event-handlers": ["console_direct+"],
+    "cmake-args": [
+      "-DCMAKE_BUILD_TYPE=RelWithDebInfo",
+      "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+    ],
+    "make-args": ["-j4"]
+  },
+  "test": {
+    "event-handlers": ["console_direct+"],
+    "ctest-args": ["--verbose"]
+  }
+}

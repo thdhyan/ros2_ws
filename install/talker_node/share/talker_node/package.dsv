@@ -1,0 +1,9 @@
+source;share/talker_node/hook/pythonpath.ps1
+source;share/talker_node/hook/pythonpath.dsv
+source;share/talker_node/hook/pythonpath.sh
+source;share/talker_node/hook/ament_prefix_path.ps1
+source;share/talker_node/hook/ament_prefix_path.dsv
+source;share/talker_node/hook/ament_prefix_path.sh
+source;../../build/talker_node/share/talker_node/hook/pythonpath_develop.ps1
+source;../../build/talker_node/share/talker_node/hook/pythonpath_develop.dsv
+source;../../build/talker_node/share/talker_node/hook/pythonpath_develop.sh

@@ -1,0 +1,132 @@
+services:
+  debug-node:
+    build:
+      context: .
+      dockerfile: ./debug_node/Dockerfile
+    container_name: ros2_debug_node
+    volumes:
+      - ../:/ros2_ws/src:cached
+      - /tmp/.X11-unix:/tmp/.X11-unix:ro
+      - ~/.Xauthority:/home/root/.Xauthority:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    command: bash -c "source /ros2_ws/install/setup.bash && ros2 run debug_node debug_node"
+    network_mode: host
+    ipc: host
+    privileged: true
+    runtime: nvidia
+
+  talker-node:
+    build:
+      context: .
+      dockerfile: ./talker_node/Dockerfile
+    container_name: ros2_talker_node
+    volumes:
+      - ../:/ros2_ws/src:cached
+      - /tmp/.X11-unix:/tmp/.X11-unix:ro
+      - ~/.Xauthority:/home/root/.Xauthority:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    command: bash -c "source /ros2_ws/install/setup.bash && ros2 run talker_node talker_node"
+    network_mode: host
+    ipc: host
+    privileged: true
+    runtime: nvidia
+
+  listener-node:
+    build:
+      context: .
+      dockerfile: ./listener_node/Dockerfile
+    container_name: ros2_listener_node
+    volumes:
+      - ../:/ros2_ws/src:cached
+      - /tmp/.X11-unix:/tmp/.X11-unix:ro
+      - ~/.Xauthority:/home/root/.Xauthority:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    command: bash -c "source /ros2_ws/install/setup.bash && ros2 run listener_node listener_node"
+    network_mode: host
+    ipc: host
+    privileged: true
+    runtime: nvidia
+
+  gazebo-node:
+    build:
+      context: .
+      dockerfile: ./gazebo_node/Dockerfile
+    container_name: ros2_gazebo_node
+    volumes:
+      - ../:/ros2_ws/src:cached
+      - /tmp/.X11-unix:/tmp/.X11-unix:ro
+      - ~/.Xauthority:/home/root/.Xauthority:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    command: bash -c "source /ros2_ws/install/setup.bash && ros2 launch gazebo_node gazebo.launch.py"
+    network_mode: host
+    ipc: host
+    privileged: true
+    runtime: nvidia
+
+  turtlebot-node:
+    build:
+      context: .
+      dockerfile: ./turtlebot_node/Dockerfile
+    container_name: ros2_turtlebot_node
+    volumes:
+      - ../:/ros2_ws/src:cached
+      - /tmp/.X11-unix:/tmp/.X11-unix:ro
+      - ~/.Xauthority:/home/root/.Xauthority:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    command: bash -c "source /ros2_ws/install/setup.bash && ros2 launch turtlebot_node spawn_turtlebot.launch.py"
+    network_mode: host
+    ipc: host
+    privileged: true
+    runtime: nvidia
+    depends_on:
+      - gazebo-node
+
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ros2_ws_dev
+    container_name: ros2_ws_dev
+    volumes:
+      - ..:/ros2_ws
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /dev/dri:/dev/dri
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - ROS_DOMAIN_ID=42
+    network_mode: host
+    privileged: true
+    runtime: nvidia
+    ipc: host
+    command: sleep infinity
+    tty: true
+    stdin_open: true
+    user: root
