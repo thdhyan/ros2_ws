@@ -1,0 +1,17 @@
+[1.251s] Invoking command in '/ros2_ws/build/turtlebot_node': PYTHONPATH=/ros2_ws/build/turtlebot_node/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/ros2_ws/install/turtlebot_node/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /ros2_ws/build/turtlebot_node/build --no-deps symlink_data
+[1.494s] running develop
+[1.632s] running egg_info
+[1.647s] writing turtlebot_node.egg-info/PKG-INFO
+[1.648s] writing dependency_links to turtlebot_node.egg-info/dependency_links.txt
+[1.648s] writing entry points to turtlebot_node.egg-info/entry_points.txt
+[1.648s] writing requirements to turtlebot_node.egg-info/requires.txt
+[1.648s] writing top-level names to turtlebot_node.egg-info/top_level.txt
+[1.674s] reading manifest file 'turtlebot_node.egg-info/SOURCES.txt'
+[1.675s] writing manifest file 'turtlebot_node.egg-info/SOURCES.txt'
+[1.689s] running build_ext
+[1.689s] Creating /ros2_ws/install/turtlebot_node/lib/python3.12/site-packages/turtlebot-node.egg-link (link to .)
+[1.689s] Installing turtlebot script to /ros2_ws/install/turtlebot_node/lib/turtlebot_node
+[1.689s] 
+[1.690s] Installed /ros2_ws/build/turtlebot_node
+[1.690s] running symlink_data
+[1.724s] Invoked command in '/ros2_ws/build/turtlebot_node' returned '0': PYTHONPATH=/ros2_ws/build/turtlebot_node/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/ros2_ws/install/turtlebot_node/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /ros2_ws/build/turtlebot_node/build --no-deps symlink_data

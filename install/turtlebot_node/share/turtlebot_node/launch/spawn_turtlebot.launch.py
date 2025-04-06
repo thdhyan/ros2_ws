@@ -1,0 +1,1 @@
+/ros2_ws/build/turtlebot_node/launch/spawn_turtlebot.launch.py

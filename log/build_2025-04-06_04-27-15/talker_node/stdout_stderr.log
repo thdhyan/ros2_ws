@@ -1,0 +1,15 @@
+running develop
+running egg_info
+writing talker_node.egg-info/PKG-INFO
+writing dependency_links to talker_node.egg-info/dependency_links.txt
+writing entry points to talker_node.egg-info/entry_points.txt
+writing requirements to talker_node.egg-info/requires.txt
+writing top-level names to talker_node.egg-info/top_level.txt
+reading manifest file 'talker_node.egg-info/SOURCES.txt'
+writing manifest file 'talker_node.egg-info/SOURCES.txt'
+running build_ext
+Creating /ros2_ws/install/talker_node/lib/python3.12/site-packages/talker-node.egg-link (link to .)
+Installing talker_node script to /ros2_ws/install/talker_node/lib/talker_node
+
+Installed /ros2_ws/build/talker_node
+running symlink_data

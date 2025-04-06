@@ -1,1 +1,1 @@
-/ros2_ws/src/gazebo_node/launch/gazebo.launch.py
+/ros2_ws/build/gazebo_node/launch/gazebo.launch.py

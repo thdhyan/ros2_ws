@@ -1,0 +1,24 @@
+running develop
+running egg_info
+creating gazebo_node.egg-info
+writing gazebo_node.egg-info/PKG-INFO
+writing dependency_links to gazebo_node.egg-info/dependency_links.txt
+writing entry points to gazebo_node.egg-info/entry_points.txt
+writing requirements to gazebo_node.egg-info/requires.txt
+writing top-level names to gazebo_node.egg-info/top_level.txt
+writing manifest file 'gazebo_node.egg-info/SOURCES.txt'
+reading manifest file 'gazebo_node.egg-info/SOURCES.txt'
+writing manifest file 'gazebo_node.egg-info/SOURCES.txt'
+running build_ext
+Creating /ros2_ws/install/gazebo_node/lib/python3.12/site-packages/gazebo-node.egg-link (link to .)
+Installing gazebo_node script to /ros2_ws/install/gazebo_node/lib/gazebo_node
+
+Installed /ros2_ws/build/gazebo_node
+running symlink_data
+creating /ros2_ws/install/gazebo_node/share/ament_index
+creating /ros2_ws/install/gazebo_node/share/ament_index/resource_index
+creating /ros2_ws/install/gazebo_node/share/ament_index/resource_index/packages
+symbolically linking /ros2_ws/build/gazebo_node/resource/gazebo_node -> /ros2_ws/install/gazebo_node/share/ament_index/resource_index/packages
+symbolically linking /ros2_ws/build/gazebo_node/package.xml -> /ros2_ws/install/gazebo_node/share/gazebo_node
+creating /ros2_ws/install/gazebo_node/share/gazebo_node/launch
+symbolically linking /ros2_ws/build/gazebo_node/launch/gazebo.launch.py -> /ros2_ws/install/gazebo_node/share/gazebo_node/launch

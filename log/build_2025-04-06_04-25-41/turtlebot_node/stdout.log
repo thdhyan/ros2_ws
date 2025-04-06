@@ -1,0 +1,24 @@
+running develop
+running egg_info
+creating turtlebot_node.egg-info
+writing turtlebot_node.egg-info/PKG-INFO
+writing dependency_links to turtlebot_node.egg-info/dependency_links.txt
+writing entry points to turtlebot_node.egg-info/entry_points.txt
+writing requirements to turtlebot_node.egg-info/requires.txt
+writing top-level names to turtlebot_node.egg-info/top_level.txt
+writing manifest file 'turtlebot_node.egg-info/SOURCES.txt'
+reading manifest file 'turtlebot_node.egg-info/SOURCES.txt'
+writing manifest file 'turtlebot_node.egg-info/SOURCES.txt'
+running build_ext
+Creating /ros2_ws/install/turtlebot_node/lib/python3.12/site-packages/turtlebot-node.egg-link (link to .)
+Installing turtlebot script to /ros2_ws/install/turtlebot_node/lib/turtlebot_node
+
+Installed /ros2_ws/build/turtlebot_node
+running symlink_data
+creating /ros2_ws/install/turtlebot_node/share/ament_index
+creating /ros2_ws/install/turtlebot_node/share/ament_index/resource_index
+creating /ros2_ws/install/turtlebot_node/share/ament_index/resource_index/packages
+symbolically linking /ros2_ws/build/turtlebot_node/resource/turtlebot_node -> /ros2_ws/install/turtlebot_node/share/ament_index/resource_index/packages
+symbolically linking /ros2_ws/build/turtlebot_node/package.xml -> /ros2_ws/install/turtlebot_node/share/turtlebot_node
+creating /ros2_ws/install/turtlebot_node/share/turtlebot_node/launch
+symbolically linking /ros2_ws/build/turtlebot_node/launch/spawn_turtlebot.launch.py -> /ros2_ws/install/turtlebot_node/share/turtlebot_node/launch

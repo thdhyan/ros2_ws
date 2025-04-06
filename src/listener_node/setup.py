@@ -6,7 +6,7 @@ package_name = "listener_node"
 
 setup(
     name=package_name,
-    version="0.0.1",
+    version="0.0.0",
     packages=[package_name],
     data_files=[
         ("share/ament_index/resource_index/packages",
@@ -16,14 +16,14 @@ setup(
     ],
     install_requires=["setuptools"],
     zip_safe=True,
-    maintainer="ROS Maintainer",
+    maintainer="ros",
     maintainer_email="ros@todo.todo",
-    description="ROS2 listener node for subscribing to messages",
+    description="Listener node for ROS2 workspace",
     license="Apache-2.0",
     tests_require=["pytest"],
     entry_points={
         "console_scripts": [
-            "listener = listener_node.listener_node:main"
+            "listener_node = listener_node.listener:main"
         ],
     },
 )

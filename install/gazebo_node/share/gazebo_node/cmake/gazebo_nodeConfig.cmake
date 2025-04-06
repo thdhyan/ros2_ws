@@ -1,1 +1,0 @@
-/ros2_ws/build/gazebo_node/ament_cmake_core/gazebo_nodeConfig.cmake

@@ -1,0 +1,15 @@
+running develop
+running egg_info
+writing listener_node.egg-info/PKG-INFO
+writing dependency_links to listener_node.egg-info/dependency_links.txt
+writing entry points to listener_node.egg-info/entry_points.txt
+writing requirements to listener_node.egg-info/requires.txt
+writing top-level names to listener_node.egg-info/top_level.txt
+reading manifest file 'listener_node.egg-info/SOURCES.txt'
+writing manifest file 'listener_node.egg-info/SOURCES.txt'
+running build_ext
+Creating /ros2_ws/install/listener_node/lib/python3.12/site-packages/listener-node.egg-link (link to .)
+Installing listener_node script to /ros2_ws/install/listener_node/lib/listener_node
+
+Installed /ros2_ws/build/listener_node
+running symlink_data

@@ -6,24 +6,23 @@ package_name = "gazebo_node"
 
 setup(
     name=package_name,
-    version="0.0.1",
+    version="0.0.0",
     packages=[package_name],
     data_files=[
-        ("share/ament_index/resource_index/packages",
-            ["resource/" + package_name]),
+        ("share/ament_index/resource_index/packages", ["resource/" + package_name]),
         ("share/" + package_name, ["package.xml"]),
-        (os.path.join("share", package_name, "launch"), glob("launch/*.py")),
+        ("share/" + package_name + "/launch", ["launch/gazebo.launch.py"]),
     ],
     install_requires=["setuptools"],
     zip_safe=True,
-    maintainer="ROS Maintainer",
+    maintainer="ros",
     maintainer_email="ros@todo.todo",
-    description="ROS2 node for Gazebo simulation interface",
+    description="Gazebo node for ROS2 workspace",
     license="Apache-2.0",
     tests_require=["pytest"],
     entry_points={
         "console_scripts": [
-            "gazebo_node = gazebo_node.gazebo_node:main"
+            "gazebo_node = gazebo_node.gazebo_node:main",
         ],
     },
 )

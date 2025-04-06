@@ -10,6 +10,7 @@ x-common-config: &common-config
     - /tmp/.X11-unix:/tmp/.X11-unix:ro          # X11 socket
     - ${HOME}/.Xauthority:/home/root/.Xauthority:ro  # X11 authentication
     - /dev/dri:/dev/dri                         # GPU access
+    - ./logs:/root/.ros/log/  # Mount logs directory
 
   # Common environment variables
   environment:

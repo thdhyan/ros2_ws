@@ -5,7 +5,9 @@ services:
       dockerfile: ./debug_node/Dockerfile
     container_name: ros2_debug_node
     volumes:
-      - ../:/ros2_ws/src:cached
+      # - ../:/ros2_ws/src:cached
+      - ./build:/ros2_ws/build:cached
+      - ./install:/ros2_ws/install:cached
       - /tmp/.X11-unix:/tmp/.X11-unix:ro
       - ~/.Xauthority:/home/root/.Xauthority:ro
       - /etc/localtime:/etc/localtime:ro
