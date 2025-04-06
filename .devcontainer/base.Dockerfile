@@ -1,4 +1,4 @@
-FROM osrf/ros:jazzy-desktop-full
+FROM osrf/ros:humble-desktop-full
 
 # Install basic development tools
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -52,8 +52,8 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && chmod 0440 /etc/sudoers.d/$USERNAME
 
 # Set up ROS2 environment
-RUN echo 'source /opt/ros/jazzy/setup.bash' >> /root/.bashrc
-RUN echo 'source /opt/ros/jazzy/setup.bash' >> /home/$USERNAME/.bashrc
+RUN echo 'source /opt/ros/humble/setup.bash' >> /root/.bashrc
+RUN echo 'source /opt/ros/humble/setup.bash' >> /home/$USERNAME/.bashrc
 
 # Define default workdir
 WORKDIR /ros2_ws

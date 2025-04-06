@@ -1,13 +1,15 @@
-FROM osrf/ros:jazzy-desktop-full
+FROM osrf/ros:humble-desktop-full
 
 # Add Gazebo repository
-RUN apt-get update && apt-get install -y wget lsb-release gnupg && \
+RUN apt-get update && apt-get install -y wget lsb-release gnupg curl && \
     wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg && \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null
 
 # Install Gazebo harmonic and ROS-GZ integration packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ros-jazzy-ros-gz \
+    ros-humble-ros-gz \
+    ros-humble-ros-ign-bridge \
+    # gz-harmonic \
     && rm -rf /var/lib/apt/lists/*
 
 # Set up Gazebo environment variables
@@ -16,9 +18,9 @@ ENV GZ_SIM_SYSTEM_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/gz-sim-7/plugins
 ENV GZ_RESOURCE_PATH=/usr/share/gz
 
 # Create a non-root user 'ros' and switch to it
-RUN useradd -m ros && \
-    mkdir -p /home/ros/.gz && \
-    chown -R ros:ros /home/ros
+# RUN useradd -m ros && \
+#     mkdir -p /home/ros/.gz && \
+#     chown -R ros:ros /home/ros
 
 # Set the working directory to the ROS2 workspace
 WORKDIR /ros2_ws
@@ -27,7 +29,7 @@ WORKDIR /ros2_ws
 COPY . /ros2_ws
 
 # Build the workspace
-RUN /bin/bash -c "source /opt/ros/jazzy/setup.bash && colcon build --symlink-install"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash && colcon build --symlink-install"
 
 # Copy and set up entrypoint
 COPY entrypoint.sh /entrypoint.sh

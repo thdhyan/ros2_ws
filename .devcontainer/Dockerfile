@@ -1,4 +1,4 @@
-FROM osrf/ros:jazzy-desktop-full
+FROM osrf/ros:humble-desktop-full
 
 # Avoid interactive prompts during build
 ENV DEBIAN_FRONTEND=noninteractive
@@ -44,8 +44,8 @@ ENV NVIDIA_DRIVER_CAPABILITIES graphics,utility,compute
 ENV QT_X11_NO_MITSHM 1
 
 # Setup ROS2 environment for both root and the new user
-RUN echo 'source /opt/ros/jazzy/setup.bash' >> /root/.bashrc
-RUN echo 'source /opt/ros/jazzy/setup.bash' >> /home/$USERNAME/.bashrc
+RUN echo 'source /opt/ros/humble/setup.bash' >> /root/.bashrc
+RUN echo 'source /opt/ros/humble/setup.bash' >> /home/$USERNAME/.bashrc
 
 # Create entry point
 COPY entrypoint.sh /entrypoint.sh

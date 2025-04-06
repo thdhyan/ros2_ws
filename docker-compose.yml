@@ -4,13 +4,13 @@
 x-common-config: &common-config
   # Common volumes for all services
   volumes:
-    # - ./src:/ros2_ws/src:cached                  # Mount only the src directory
-    - ./build:/ros2_ws/build                    # Mount the build directory
-    - ./install:/ros2_ws/install                # Mount the install directory
-    - /tmp/.X11-unix:/tmp/.X11-unix:ro          # X11 socket
-    - ${HOME}/.Xauthority:/home/root/.Xauthority:ro  # X11 authentication
-    - /dev/dri:/dev/dri                         # GPU access
-    - ./logs:/root/.ros/log/  # Mount logs directory
+    - ./src:/ros2_ws/src                  # Mount only the src directory
+    - ./build:/ros2_ws/build              # Mount the build directory
+    - ./install:/ros2_ws/install          # Mount the install directory
+    - /tmp/.X11-unix:/tmp/.X11-unix:ro    # X11 socket
+    - ${HOME}/.Xauthority:/home/root/.Xauthority # X11 authentication
+    - /dev/dri:/dev/dri                   # GPU access
+    - ./logs:/root/.ros/log/              # Mount logs directory
 
   # Common environment variables
   environment:
@@ -18,8 +18,12 @@ x-common-config: &common-config
     - QT_X11_NO_MITSHM=1
     - NVIDIA_VISIBLE_DEVICES=all
     - NVIDIA_DRIVER_CAPABILITIES=all
+    - TURTLEBOT3_MODEL=waffle
     - ROS_DOMAIN_ID=42
     - ROS_LOCALHOST_ONLY=0
+    - ROS_DISTRO=humble
+    - GZ_PARTITION=0
+    - GZ_IP=127.0.0.1
 
   # Common settings
   user: root
@@ -27,61 +31,32 @@ x-common-config: &common-config
   network_mode: host
   privileged: true
   stop_grace_period: 2s
+  mem_limit: 4g
+  # Common runtime for GPU access
+  runtime: nvidia
 
 services:
   debug_node:
+    <<: *common-config
     build:
       context: .devcontainer
       dockerfile: debug_node/Dockerfile
     container_name: ros2_debug_node
-    volumes:
-      - ./src/debug_node:/ros2_ws/src/debug_node:cached  # Mount only the src of debug_node
-      - ./build:/ros2_ws/build                          # Mount the build directory
-      - ./install:/ros2_ws/install                      # Mount the install directory
-      - /tmp/.X11-unix:/tmp/.X11-unix:ro                # X11 socket
-      - ${HOME}/.Xauthority:/home/root/.Xauthority:ro   # X11 authentication
-      - /dev/dri:/dev/dri                               # GPU access
-    environment:
-      - DISPLAY=${DISPLAY}
-      - QT_X11_NO_MITSHM=1
-      - NVIDIA_VISIBLE_DEVICES=all
-      - NVIDIA_DRIVER_CAPABILITIES=all
-      - ROS_DOMAIN_ID=42
-      - ROS_LOCALHOST_ONLY=0
-    ipc: host
-    network_mode: host
-    privileged: true
     command: >
-      bash -c "source /opt/ros/jazzy/setup.bash && 
+      bash -c "source /opt/ros/humble/setup.bash && 
               source /ros2_ws/install/setup.bash && 
               ros2 run debug_node debug_node &&
               tail -f /dev/null"
     restart: "no"
 
   talker_node:
+    <<: *common-config
     build:
       context: .devcontainer
       dockerfile: talker_node/Dockerfile
     container_name: ros2_talker_node
-    volumes:
-      - ./src/talker_node:/ros2_ws/src/talker_node:cached  # Mount only the src of talker_node
-      - ./build:/ros2_ws/build                            # Mount the build directory
-      - ./install:/ros2_ws/install                        # Mount the install directory
-      - /tmp/.X11-unix:/tmp/.X11-unix:ro                  # X11 socket
-      - ${HOME}/.Xauthority:/home/root/.Xauthority:ro     # X11 authentication
-      - /dev/dri:/dev/dri                                 # GPU access
-    environment:
-      - DISPLAY=${DISPLAY}
-      - QT_X11_NO_MITSHM=1
-      - NVIDIA_VISIBLE_DEVICES=all
-      - NVIDIA_DRIVER_CAPABILITIES=all
-      - ROS_DOMAIN_ID=42
-      - ROS_LOCALHOST_ONLY=0
-    ipc: host
-    network_mode: host
-    privileged: true
     command: >
-      bash -c "source /opt/ros/jazzy/setup.bash && 
+      bash -c "source /opt/ros/humble/setup.bash && 
               source /ros2_ws/install/setup.bash && 
               ros2 run talker_node talker_node --ros-args -p count:=10 && 
               tail -f /dev/null"
@@ -90,29 +65,13 @@ services:
     restart: "no"
 
   listener_node:
+    <<: *common-config
     build:
       context: .devcontainer
       dockerfile: listener_node/Dockerfile
     container_name: ros2_listener_node
-    volumes:
-      - ./src/listener_node:/ros2_ws/src/listener_node:cached  # Mount only the src of listener_node
-      - ./build:/ros2_ws/build                                # Mount the build directory
-      - ./install:/ros2_ws/install                            # Mount the install directory
-      - /tmp/.X11-unix:/tmp/.X11-unix:ro                      # X11 socket
-      - ${HOME}/.Xauthority:/home/root/.Xauthority:ro         # X11 authentication
-      - /dev/dri:/dev/dri                                     # GPU access
-    environment:
-      - DISPLAY=${DISPLAY}
-      - QT_X11_NO_MITSHM=1
-      - NVIDIA_VISIBLE_DEVICES=all
-      - NVIDIA_DRIVER_CAPABILITIES=all
-      - ROS_DOMAIN_ID=42
-      - ROS_LOCALHOST_ONLY=0
-    ipc: host
-    network_mode: host
-    privileged: true
     command: >
-      bash -c "source /opt/ros/jazzy/setup.bash && 
+      bash -c "source /opt/ros/humble/setup.bash && 
               source /ros2_ws/install/setup.bash && 
               ros2 run listener_node listener_node && 
               tail -f /dev/null"
@@ -121,58 +80,26 @@ services:
     restart: "no"
 
   gazebo_node:
+    <<: *common-config
     build:
       context: .devcontainer
       dockerfile: gazebo_node/Dockerfile
     container_name: ros2_gazebo_node
-    volumes:
-      - ./src/gazebo_node:/ros2_ws/src/gazebo_node:cached  # Mount only the src of gazebo_node
-      - ./build:/ros2_ws/build                            # Mount the build directory
-      - ./install:/ros2_ws/install                        # Mount the install directory
-      - /tmp/.X11-unix:/tmp/.X11-unix:ro                  # X11 socket
-      - ${HOME}/.Xauthority:/home/root/.Xauthority:ro     # X11 authentication
-      - /dev/dri:/dev/dri                                 # GPU access
-    environment:
-      - DISPLAY=${DISPLAY}
-      - QT_X11_NO_MITSHM=1
-      - NVIDIA_VISIBLE_DEVICES=all
-      - NVIDIA_DRIVER_CAPABILITIES=all
-      - ROS_DOMAIN_ID=42
-      - ROS_LOCALHOST_ONLY=0
-    ipc: host
-    network_mode: host
-    privileged: true
     command: >
-      bash -c "source /opt/ros/jazzy/setup.bash && 
+      bash -c "source /opt/ros/humble/setup.bash && 
               source /ros2_ws/install/setup.bash && 
               ros2 launch gazebo_node gazebo.launch.py && 
               tail -f /dev/null"
     restart: "no"
 
   turtlebot_node:
+    <<: *common-config
     build:
       context: .devcontainer
       dockerfile: turtlebot_node/Dockerfile
     container_name: ros2_turtlebot_node
-    volumes:
-      - ./src/turtlebot_node:/ros2_ws/src/turtlebot_node:cached  # Mount only the src of turtlebot_node
-      - ./build:/ros2_ws/build                                  # Mount the build directory
-      - ./install:/ros2_ws/install                              # Mount the install directory
-      - /tmp/.X11-unix:/tmp/.X11-unix:ro                        # X11 socket
-      - ${HOME}/.Xauthority:/home/root/.Xauthority:ro           # X11 authentication
-      - /dev/dri:/dev/dri                                       # GPU access
-    environment:
-      - DISPLAY=${DISPLAY}
-      - QT_X11_NO_MITSHM=1
-      - NVIDIA_VISIBLE_DEVICES=all
-      - NVIDIA_DRIVER_CAPABILITIES=all
-      - ROS_DOMAIN_ID=42
-      - ROS_LOCALHOST_ONLY=0
-    ipc: host
-    network_mode: host
-    privileged: true
     command: >
-      bash -c "source /opt/ros/jazzy/setup.bash && 
+      bash -c "source /opt/ros/humble/setup.bash && 
               source /ros2_ws/install/setup.bash && 
               ros2 launch turtlebot_node spawn_turtlebot.launch.py && 
               tail -f /dev/null"
@@ -180,3 +107,18 @@ services:
       - gazebo_node
     restart: "no"
     stop_grace_period: 5s  # Allow more time for clean shutdown of robot simulation
+  
+  # turtlebot_rviz:
+  #   <<: *common-config
+  #   build:
+  #     context: .devcontainer
+  #     dockerfile: turtlebot_node/Dockerfile
+  #   container_name: ros2_turtlebot_rviz
+  #   command: >
+  #     bash -c "source /opt/ros/humble/setup.bash && 
+  #             source /ros2_ws/install/setup.bash && 
+  #             ros2 launch turtlebot_bringup rviz2.launch.py && 
+  #             tail -f /dev/null"
+  #   depends_on:
+  #     - turtlebot_node
+  #   restart: "no"

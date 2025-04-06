@@ -132,3 +132,6 @@ services:
     tty: true
     stdin_open: true
     user: root
+    #  Limit node to 8GB of memory
+    mem_limit: 8g
+    

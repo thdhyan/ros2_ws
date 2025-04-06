@@ -14,5 +14,5 @@
         "twxs.cmake",
         "ms-azuretools.vscode-docker"
     ],
-    "postCreateCommand": "echo 'source /opt/ros/jazzy/setup.bash' >> ~/.bashrc"
+    "postCreateCommand": "echo 'source /opt/ros/humble/setup.bash' >> ~/.bashrc"
 }

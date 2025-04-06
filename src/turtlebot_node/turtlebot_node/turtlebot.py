@@ -3,7 +3,8 @@ from rclpy.node import Node
 from geometry_msgs.msg import Twist, Pose
 from nav_msgs.msg import Odometry
 from std_msgs.msg import String
-from gazebo_msgs.srv import SpawnEntity
+from ros_gz_interfaces.srv import SpawnEntity
+
 import os
 
 
@@ -33,7 +34,7 @@ class TurtlebotNode(Node):
             self.chatter_callback,
             10
         )
-
+        
         # Initialize robot state
         self.current_pose = None
         self.get_logger().info("Turtlebot Node Started")
@@ -49,7 +50,7 @@ class TurtlebotNode(Node):
 
         self.get_logger().info("Spawn Service is Ready")
 
-        # Spawn the TurtleBot3 in the office environment
+        # Spawn the TurtleBot3 in the simulation
         self.spawn_turtlebot3()
 
     def odom_callback(self, msg):
@@ -72,13 +73,13 @@ class TurtlebotNode(Node):
         request = SpawnEntity.Request()
         request.name = name
 
-        # Load the TurtleBot3 URDF from the ROS2 package
-        urdf_path = os.path.join(
-            os.getenv("TURTLEBOT3_MODEL_PATH", "/usr/share/turtlebot3_description/urdf"),
-            "turtlebot3_waffle.urdf"
+        # Load the TurtleBot3 SDF from the ROS2 package
+        sdf_path = os.path.join(
+            os.getenv("TURTLEBOT3_MODEL_PATH", "/usr/share/turtlebot3_gazebo/models/turtlebot3_waffle"),
+            "model.sdf"
         )
-        with open(urdf_path, "r") as urdf_file:
-            request.xml = urdf_file.read()
+        with open(sdf_path, "r") as sdf_file:
+            request.xml = sdf_file.read()
 
         request.robot_namespace = name
         request.initial_pose = Pose()

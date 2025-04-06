@@ -2,6 +2,9 @@ devel/
 logs/
 build/
 install/
+log/
+logs/
+*.log
 bin/
 lib/
 msg_gen/

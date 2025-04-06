@@ -18,7 +18,7 @@ setup(
     zip_safe=True,
     maintainer="ROS Maintainer",
     maintainer_email="ros@todo.todo",
-    description="ROS2 node for Turtlebot control and navigation",
+    description="TurtleBot3 node for ROS2 workspace",
     license="Apache-2.0",
     tests_require=["pytest"],
     entry_points={

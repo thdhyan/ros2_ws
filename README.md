@@ -1,12 +1,12 @@
 # ROS2 TurtleBot Workspace
 
-A containerized ROS2 jazzy workspace for TurtleBot4 simulation in Gazebo Harmonic, including message publishing/subscription examples.
+A containerized ROS2 humble workspace for TurtleBot4 simulation in Gazebo Harmonic, including message publishing/subscription examples.
 
-![TurtleBot4 in Gazebo](https://raw.githubusercontent.com/turtlebot/turtlebot4_tutorials/jazzy/turtlebot4_simulator/images/tb4_gazebo.png)
+![TurtleBot4 in Gazebo](https://raw.githubusercontent.com/turtlebot/turtlebot4_tutorials/humble/turtlebot4_simulator/images/tb4_gazebo.png)
 
 ## Project Overview
 
-This workspace provides a complete development environment for working with TurtleBot4 in Gazebo Harmonic using ROS2 jazzy. The architecture includes:
+This workspace provides a complete development environment for working with TurtleBot4 in Gazebo Harmonic using ROS2 humble. The architecture includes:
 
 - **Containerized Environment**: All dependencies are containerized using Docker to ensure consistent development and deployment
 - **Multi-Node Architecture**: Separate nodes for different functionalities (debugging, communication, simulation, robot control)
@@ -356,6 +356,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Acknowledgements
 
-- [ROS2 Documentation](https://docs.ros.org/en/jazzy/index.html)
+- [ROS2 Documentation](https://docs.ros.org/en/humble/index.html)
 - [TurtleBot4 Project](https://turtlebot.github.io/turtlebot4-user-manual/)
 - [Gazebo Simulation](https://gazebosim.org/home)
