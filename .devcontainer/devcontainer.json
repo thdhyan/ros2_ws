@@ -4,7 +4,7 @@
     "service": "dev",
     "runServices": ["dev"],
     "workspaceFolder": "/ros2_ws",
-    "remoteUser": "ros",
+    "remoteUser": "root",
     "settings": {
         "terminal.integrated.shell.linux": "/bin/bash"
     },

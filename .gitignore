@@ -5,6 +5,7 @@ install/
 log/
 logs/
 *.log
+data/
 bin/
 lib/
 msg_gen/

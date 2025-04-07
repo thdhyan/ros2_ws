@@ -36,6 +36,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libglvnd-dev \
     libgl1-mesa-dev \
     libegl1-mesa-dev \
+    ros-humble-nav2-bringup \
+    ros-humble-navigation2 \
     && rm -rf /var/lib/apt/lists/*
 
 # Set up environment variables for X11 forwarding and NVIDIA

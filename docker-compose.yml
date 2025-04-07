@@ -4,7 +4,8 @@
 x-common-config: &common-config
   # Common volumes for all services
   volumes:
-    - ./src:/ros2_ws/src                  # Mount only the src directory
+    - ./src:/ros2_ws/src    
+    - ./data:/ros2_ws/data              # Mount only the src directory
     - ./build:/ros2_ws/build              # Mount the build directory
     - ./install:/ros2_ws/install          # Mount the install directory
     - /tmp/.X11-unix:/tmp/.X11-unix:ro    # X11 socket
@@ -107,18 +108,40 @@ services:
       - gazebo_node
     restart: "no"
     stop_grace_period: 5s  # Allow more time for clean shutdown of robot simulation
-  
-  # turtlebot_rviz:
-  #   <<: *common-config
-  #   build:
-  #     context: .devcontainer
-  #     dockerfile: turtlebot_node/Dockerfile
-  #   container_name: ros2_turtlebot_rviz
-  #   command: >
-  #     bash -c "source /opt/ros/humble/setup.bash && 
-  #             source /ros2_ws/install/setup.bash && 
-  #             ros2 launch turtlebot_bringup rviz2.launch.py && 
-  #             tail -f /dev/null"
-  #   depends_on:
-  #     - turtlebot_node
-  #   restart: "no"
+
+  explore_node:
+    <<: *common-config
+    build:
+      context: .devcontainer
+      dockerfile: explore_node/Dockerfile
+    container_name: ros2_explore_node
+    command: >
+      bash -c "source /opt/ros/humble/setup.bash && 
+              source /ros2_ws/install/setup.bash &&
+              chmod 777 /ros2_ws/data &&
+              # Wait for Gazebo to be fully initialized (adjust sleep time if needed)
+              echo 'Waiting for Gazebo to initialize...' &&
+              sleep 2 &&
+              echo 'Gazebo should be running now, starting exploration node...' &&
+              ros2 launch explore_lite auto_explore.launch.py && 
+              tail -f /dev/null"
+    depends_on:
+      - gazebo_node
+      - turtlebot_node
+    restart: "no"
+    stop_grace_period: 5s  # Allow time for clean shutdown
+    
+    # Add NVIDIA drivers access
+    devices:
+      - /dev/nvidia0:/dev/nvidia0
+      - /dev/nvidiactl:/dev/nvidiactl
+      - /dev/nvidia-uvm:/dev/nvidia-uvm
+    # Add debugging capabilities
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
+      
+    # Enable interactive terminal
+    stdin_open: true
+    tty: true
