@@ -7,7 +7,7 @@ This workspace contains a ROS2-based simulation system with Gazebo integration, 
 - **gazebo_node**: Handles Gazebo simulation and robot spawning
 - **talker_node**: Publishes messages on the 'chatter' topic
 - **listener_node**: Subscribes to messages on the 'chatter' topic
-- **turtlebot_node**: Controls Turtlebot movement and behavior
+- **robot_node**: Controls Turtlebot movement and behavior
 
 ## Prerequisites
 
@@ -45,7 +45,7 @@ ros2 launch talker_node talker_launch.py
 ros2 launch listener_node listener_launch.py
 
 # Launch Turtlebot Node
-ros2 launch turtlebot_node turtlebot_launch.py
+ros2 launch robot_node turtlebot_launch.py
 ```
 
 ## Node Information

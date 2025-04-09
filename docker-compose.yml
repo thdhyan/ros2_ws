@@ -4,10 +4,10 @@
 x-common-config: &common-config
   # Common volumes for all services
   volumes:
-    - ./src:/ros2_ws/src    
-    - ./data:/ros2_ws/data              # Mount only the src directory
-    - ./build:/ros2_ws/build              # Mount the build directory
-    - ./install:/ros2_ws/install          # Mount the install directory
+    # - ./src:/ros2_ws/src    
+    # - ./data:/ros2_ws/data              # Mount only the src directory
+    # - ./build:/ros2_ws/build              # Mount the build directory
+    # - ./install:/ros2_ws/install          # Mount the install directory
     - /tmp/.X11-unix:/tmp/.X11-unix:ro    # X11 socket
     - ${HOME}/.Xauthority:/home/root/.Xauthority # X11 authentication
     - /dev/dri:/dev/dri                   # GPU access
@@ -50,98 +50,99 @@ services:
               tail -f /dev/null"
     restart: "no"
 
-  talker_node:
-    <<: *common-config
-    build:
-      context: .devcontainer
-      dockerfile: talker_node/Dockerfile
-    container_name: ros2_talker_node
-    command: >
-      bash -c "source /opt/ros/humble/setup.bash && 
-              source /ros2_ws/install/setup.bash && 
-              ros2 run talker_node talker_node --ros-args -p count:=10 && 
-              tail -f /dev/null"
-    depends_on:
-      - debug_node
-    restart: "no"
+  # talker_node:
+  #   <<: *common-config
+  #   build:
+  #     context: .devcontainer
+  #     dockerfile: talker_node/Dockerfile
+  #   container_name: ros2_talker_node
+  #   command: >
+  #     bash -c "source /opt/ros/humble/setup.bash && 
+  #             source /ros2_ws/install/setup.bash && 
+  #             ros2 run talker_node talker_node --ros-args -p count:=10 && 
+  #             tail -f /dev/null"
+  #   depends_on:
+  #     - debug_node
+  #   restart: "no"
 
-  listener_node:
-    <<: *common-config
-    build:
-      context: .devcontainer
-      dockerfile: listener_node/Dockerfile
-    container_name: ros2_listener_node
-    command: >
-      bash -c "source /opt/ros/humble/setup.bash && 
-              source /ros2_ws/install/setup.bash && 
-              ros2 run listener_node listener_node && 
-              tail -f /dev/null"
-    depends_on:
-      - talker_node
-    restart: "no"
+  # listener_node:
+  #   <<: *common-config
+  #   build:
+  #     context: .devcontainer
+  #     dockerfile: listener_node/Dockerfile
+  #   container_name: ros2_listener_node
+  #   command: >
+  #     bash -c "source /opt/ros/humble/setup.bash && 
+  #             source /ros2_ws/install/setup.bash && 
+  #             ros2 run listener_node listener_node && 
+  #             tail -f /dev/null"
+  #   depends_on:
+  #     - talker_node
+  #   restart: "no"
 
   gazebo_node:
     <<: *common-config
     build:
-      context: .devcontainer
-      dockerfile: gazebo_node/Dockerfile
+      context: .
+      dockerfile: .devcontainer/gazebo_node/Dockerfile
     container_name: ros2_gazebo_node
     command: >
       bash -c "source /opt/ros/humble/setup.bash && 
+             colcon build --symlink-install &&
               source /ros2_ws/install/setup.bash && 
-              ros2 launch gazebo_node gazebo.launch.py && 
+              ros2 launch gazebo_node gazebo.launch.py world_name:=turtlebot3_house.world &&
               tail -f /dev/null"
     restart: "no"
 
-  turtlebot_node:
+  robot_node:
     <<: *common-config
     build:
-      context: .devcontainer
-      dockerfile: turtlebot_node/Dockerfile
-    container_name: ros2_turtlebot_node
+      context: .
+      dockerfile: .devcontainer/robot_node/Dockerfile
+    container_name: ros2_robot_node
     command: >
       bash -c "source /opt/ros/humble/setup.bash && 
               source /ros2_ws/install/setup.bash && 
-              ros2 launch turtlebot_node spawn_turtlebot.launch.py && 
+              ros2 launch robot_node spawn_robot.launch.py && 
               tail -f /dev/null"
     depends_on:
       - gazebo_node
     restart: "no"
     stop_grace_period: 5s  # Allow more time for clean shutdown of robot simulation
 
-  explore_node:
-    <<: *common-config
-    build:
-      context: .devcontainer
-      dockerfile: explore_node/Dockerfile
-    container_name: ros2_explore_node
-    command: >
-      bash -c "source /opt/ros/humble/setup.bash && 
-              source /ros2_ws/install/setup.bash &&
-              chmod 777 /ros2_ws/data &&
-              # Wait for Gazebo to be fully initialized (adjust sleep time if needed)
-              echo 'Waiting for Gazebo to initialize...' &&
-              sleep 2 &&
-              echo 'Gazebo should be running now, starting exploration node...' &&
-              ros2 launch explore_lite auto_explore.launch.py && 
-              tail -f /dev/null"
-    depends_on:
-      - gazebo_node
-      - turtlebot_node
-    restart: "no"
-    stop_grace_period: 5s  # Allow time for clean shutdown
+  # explore_node:
+  #   <<: *common-config
+  #   build:
+  #     context: .devcontainer
+  #     dockerfile: explore_node/Dockerfile
+  #   container_name: ros2_explore_node
+  #   command: >
+  #     bash -c "source /opt/ros/humble/setup.bash && 
+  #             source /ros2_ws/install/setup.bash &&
+  #             chmod 777 /ros2_ws/data &&
+  #             # Wait for Gazebo to be fully initialized (adjust sleep time if needed)
+  #             echo 'Waiting for Gazebo to initialize...' &&
+  #             sleep 2 &&
+  #             echo 'Gazebo should be running now, starting exploration node...' &&
+  #             ros2 launch explore_lite auto_explore.launch.py && 
+  #             tail -f /dev/null"
+  #   depends_on:
+  #     - gazebo_node
+  #     - robot_node
+  #   restart: "no"
+  #   stop_grace_period: 5s  # Allow time for clean shutdown
     
-    # Add NVIDIA drivers access
-    devices:
-      - /dev/nvidia0:/dev/nvidia0
-      - /dev/nvidiactl:/dev/nvidiactl
-      - /dev/nvidia-uvm:/dev/nvidia-uvm
-    # Add debugging capabilities
-    cap_add:
-      - SYS_PTRACE
-    security_opt:
-      - seccomp:unconfined
+  #   # Add NVIDIA drivers access
+  #   devices:
+  #     - /dev/nvidia0:/dev/nvidia0
+  #     - /dev/nvidiactl:/dev/nvidiactl
+  #     - /dev/nvidia-uvm:/dev/nvidia-uvm
+  #   # Add debugging capabilities
+  #   cap_add:
+  #     - SYS_PTRACE
+  #   security_opt:
+  #     - seccomp:unconfined
       
-    # Enable interactive terminal
-    stdin_open: true
-    tty: true
+  #   # Enable interactive terminal
+  #   stdin_open: true
+  #   tty: true

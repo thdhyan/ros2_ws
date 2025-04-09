@@ -25,16 +25,21 @@ ENV GZ_RESOURCE_PATH=/usr/share/gz
 # Set the working directory to the ROS2 workspace
 WORKDIR /ros2_ws
 
-# Copy the workspace files into the container
-COPY . /ros2_ws
+# copy src/gazebo_node files
+COPY src/gazebo_node src/gazebo_node
 
+
+RUN git clone -b new_gazebo https://github.com/azeey/turtlebot3_simulations.git /ros2_ws/src/turtlebot3_simulations
+
+# In turtlebot3_simulations_ci.repos change ros2-devel to humble
+RUN sed -i 's/ros2-devel/humble/g' /ros2_ws/src/turtlebot3_simulations/turtlebot3_simulations_ci.repos
 # Build the workspace
-RUN /bin/bash -c "source /opt/ros/humble/setup.bash && colcon build --symlink-install"
+RUN /bin/bash -c "source /opt/ros/humble/setup.bash && vcs import src < /ros2_ws/src/turtlebot3_simulations/turtlebot3_simulations_ci.repos && colcon build --symlink-install"
 
 # Copy and set up entrypoint
-COPY entrypoint.sh /entrypoint.sh
+COPY .devcontainer/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # Set up entrypoint
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["bash"]
+# CMD ["bash"]

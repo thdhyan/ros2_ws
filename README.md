@@ -34,7 +34,7 @@ This workspace provides a complete development environment for working with Turt
                                   │
          ┌─────────────────┐      │      ┌─────────────────┐
          │                 │      │      │                 │
-         │  gazebo_node    ◄──────┴──────►  turtlebot_node │
+         │  gazebo_node    ◄──────┴──────►  robot_node │
          │                 │             │                 │
          └─────────────────┘             └─────────────────┘
 ```
@@ -152,7 +152,7 @@ Build all the containers using docker-compose:
 docker compose build
 
 # Build a specific service
-docker compose build turtlebot_node
+docker compose build robot_node
 ```
 
 ## Running the Workspace
@@ -172,7 +172,7 @@ For graceful shutdown:
 docker compose down
 
 # Stop specific service with proper signal handling
-docker compose stop turtlebot_node
+docker compose stop robot_node
 ```
 
 This will start the nodes in dependency order:
@@ -180,7 +180,7 @@ This will start the nodes in dependency order:
 2. talker_node
 3. listener_node
 4. gazebo_node
-5. turtlebot_node
+5. robot_node
 
 ### Running Individual Nodes
 
@@ -188,7 +188,7 @@ To run a specific node and its dependencies:
 
 ```bash
 # Run just the TurtleBot node (will also start Gazebo)
-docker compose up turtlebot_node
+docker compose up robot_node
 
 # Run just the communication nodes
 docker compose up listener_node
@@ -230,7 +230,7 @@ Purpose: Simulation environment
 - Provides physics simulation and visualization
 - Creates the world environment for the robot
 
-### turtlebot_node
+### robot_node
 
 Purpose: Robot spawning and control
 - Spawns the TurtleBot4 model in Gazebo
@@ -259,7 +259,7 @@ cd /ros2_ws
 colcon build 
 
 # Build specific packages
-colcon build --packages-select turtlebot_node
+colcon build --packages-select robot_node
 ```
 
 ### Running Tests
@@ -269,7 +269,7 @@ colcon build --packages-select turtlebot_node
 colcon test
 
 # Run tests for specific package
-colcon test --packages-select turtlebot_node
+colcon test --packages-select robot_node
 ```
 
 ### Workflow Examples
@@ -283,9 +283,9 @@ colcon test --packages-select turtlebot_node
 
 #### Modifying TurtleBot Configuration
 
-1. Edit files in `/ros2_ws/src/turtlebot_node/config`
-2. Rebuild the package: `colcon build --packages-select turtlebot_node`
-3. Restart the turtlebot node: `docker compose restart turtlebot_node`
+1. Edit files in `/ros2_ws/src/robot_node/config`
+2. Rebuild the package: `colcon build --packages-select robot_node`
+3. Restart the turtlebot node: `docker compose restart robot_node`
 
 ## Troubleshooting
 
@@ -337,17 +337,17 @@ pkill -f gazebo
 To see logs from a specific container:
 
 ```bash
-docker compose logs turtlebot_node
+docker compose logs robot_node
 
 # Follow logs in real-time
-docker compose logs -f turtlebot_node
+docker compose logs -f robot_node
 ```
 
 For more detailed debugging:
 
 ```bash
 # Run with ROS_LOG_LEVEL set to debug
-docker compose run -e ROS_LOG_LEVEL=DEBUG turtlebot_node
+docker compose run -e ROS_LOG_LEVEL=DEBUG robot_node
 ```
 
 ## License
