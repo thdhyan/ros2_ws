@@ -6,11 +6,17 @@ from launch.actions import AppendEnvironmentVariable, SetEnvironmentVariable
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
+from launch.conditions import IfCondition
 
 
 def generate_launch_description():
     
     launch_file_dir = os.path.join(get_package_share_directory('robot_node'), 'launch')
+    rviz_config_dir = os.path.join(
+        get_package_share_directory('robot_node'),
+        'rviz',
+        'tb3_gazebo.rviz'
+    )
     ros_gz_sim = get_package_share_directory('ros_gz_sim')
 
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
@@ -19,7 +25,7 @@ def generate_launch_description():
     z_pose = LaunchConfiguration('z_pose', default='0.0')
     namespace = LaunchConfiguration('namespace', default='')
     use_namespace = LaunchConfiguration('use_namespace', default='false')
-    use_rviz = LaunchConfiguration('use_rviz', default='false')
+    use_rviz = LaunchConfiguration('use_rviz', default='true')
     namespace = LaunchConfiguration('namespace', default='')
 
 
@@ -56,6 +62,14 @@ def generate_launch_description():
         }.items()
     )
 
+    rviz_cmd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(get_package_share_directory('turtlebot3_bringup'),
+                         'launch', 'rviz2.launch.py')
+        ),
+        condition=IfCondition(use_rviz)
+    )
+
     ld = LaunchDescription()
 
     # Add the commands to the launch description
@@ -63,5 +77,6 @@ def generate_launch_description():
     ld.add_action(gzclient_cmd)
     ld.add_action(robot_state_publisher_cmd)
     ld.add_action(spawn_turtlebot_cmd)
+    ld.add_action(rviz_cmd)
 
     return ld

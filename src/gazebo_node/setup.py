@@ -39,7 +39,7 @@ setup(
     name=package_name,
     version="0.0.0",
     packages=[package_name],
-    data_files=package_files(data_files, ["launch/", "worlds/", "models/"]),
+    data_files=package_files(data_files, ["launch/", "worlds/", "models/","photos/"]),
     install_requires=["setuptools"],
     zip_safe=True,
     maintainer="ros",

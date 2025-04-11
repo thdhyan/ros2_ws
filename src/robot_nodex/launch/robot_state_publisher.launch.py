@@ -42,6 +42,10 @@ def generate_launch_description():
     with open(urdf_path, 'r') as infp:
         robot_desc = infp.read()
 
+    remapping = [
+        ('/tf', '/tf'),
+        ('/tf_static', '/tf_static'),
+    ]
     return LaunchDescription([
         DeclareLaunchArgument(
             'use_sim_time',
@@ -57,5 +61,6 @@ def generate_launch_description():
                 'use_sim_time': use_sim_time,
                 'robot_description': robot_desc
             }],
-        ),
+            remappings=remapping,
+            ),
     ])

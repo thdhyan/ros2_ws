@@ -6,20 +6,27 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-humble-rqt* \
     glmark2 \
     x11-apps \
+    ros-humble-nav2-bringup \
+    ros-humble-navigation2 \
     && rm -rf /var/lib/apt/lists/*
 
 # Set up the workspace
 WORKDIR /ros2_ws
 
-# Build the debug_node package if it exists
-RUN bash -c "if [ -d /ros2_ws/src/debug_node ]; then \
-    source /opt/ros/humble/setup.bash && \
-    cd /ros2_ws && \
-    colcon build --packages-select debug_node --symlink-install; \
-    fi"
+
+COPY src/ /ros2_ws/src
+
+# RUN git clone -b humble https://github.com/ROBOTIS-GIT/DynamixelSDK.git /ros2_ws/src/DynamixelSDK
+# RUN git clone -b humble https://github.com/ROBOTIS-GIT/turtlebot3_msgs.git /ros2_ws/src/turtlebot3_msgs
+# RUN git clone -b humble https://github.com/ROBOTIS-GIT/turtlebot3.git /ros2_ws/src/turtlebot3
+# RUN git clone -b new_gazebo https://github.com/azeey/turtlebot3_simulations.git /ros2_ws/src/turtlebot3_simulations
+
+RUN bash -c " source /opt/ros/humble/setup.bash && \
+    colcon build --symlink-install && \
+    source /ros2_ws/install/setup.bash "
 
 # Copy and set up entrypoint
-COPY entrypoint.sh /entrypoint.sh
+COPY .devcontainer/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # Set up entrypoint
